@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Weather Forecast</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+
+
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+   
+   
+
+    <link href="~/lib/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-table/bootstrap-table.css" rel="stylesheet" />
+    
+
+
+
+    <script src="~/lib/Jquery/jquery.js"></script>
+    <script src="~/lib/popper/umd/popper.js"></script>
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/jquery-validate/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/jquery-inputmask/inputmask.js"></script>
+    <script src="~/lib/jquery-inputmask/jquery.inputmask.js"></script>
+    <script src="~/lib/Jquery-SerializeJSON/jquery.serializejson.js"></script>
+    <script src="~/lib/bootstrap-select/js/bootstrap-select.js"></script>
+    <script src="~/lib/bootstrap-select/js/i18n/defaults-tr_TR.js"></script>
+    <script src="~/lib/bootstrap-table/bootstrap-table.js"></script>
+</head>
+<body>
+    
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - Weather_Forecast - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

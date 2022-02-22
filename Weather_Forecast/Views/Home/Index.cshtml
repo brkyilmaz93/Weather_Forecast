@@ -1,0 +1,137 @@
+﻿@model WeatherForecast
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <input id="txtSearch" type="text" class="form-control" placeholder="Location..." aria-label="ara" aria-describedby="btnSearch" style="border-radius:30px 0px 0px  30px;">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="button" id="btnSearch" style="border-radius:0px 30px 30px 0px;">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row ">
+    <div class="col-md-6">
+
+        <div id="city"></div>
+        <div id="max_temp"></div>
+        <div id="min_temp"></div>
+        <div id="humidity"></div>
+
+    </div>
+    <div class="col-md-6">
+        <br />
+        <div id="visibility"></div>
+        <div id="air_pressure"></div>
+        <div id="predictability"></div>
+    </div>
+</div>
+
+
+<div class="row mt-5">
+    <div class="col-md-12 table-responsive">
+        <table id="grdForecast" class="table table-bordered" data-toggle="table">
+            <thead>
+                <tr>
+
+                    <th data-field="id">ID</th>
+                    <th data-field="airPressure">Air Pressure</th>
+                    <th data-field="applicableDate">Applicable Date</th>
+                    <th data-field="humidity">Humidity</th>
+                    <th data-field="maxTemp">Max Temp</th>
+                    <th data-field="minTemp">Min Temp</th>
+                    <th data-field="predictability">Predictability</th>
+                    <th data-field="theTemp">The Temp</th>
+                    <th data-field="visibility">Visibility</th>
+                    <th data-field="weatherStateAbbr">Weather State Abbr</th>
+                    <th data-field="weatherStateName">Weather State Name</th>
+                    <th data-field="windDirection">Wind Direction</th>
+                    <th data-field="windDirectionCompass">Wind Direction Compass</th>
+                    <th data-field="windSpeed">Wind Speed</th>
+                    <th data-field="created">Created</th>
+                </tr>
+
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+
+    $(document).ready(function () {
+        var _location;
+        $('#txtSearch').on('keypress', function (e) {
+            if (e.which == 13) {
+                $('#btnSearch').click();
+            }
+        });
+
+        $('#btnSearch').click(function () {
+            var _woeID;
+            _location = JSON.stringify($("#txtSearch").val());
+            if ($("#txtSearch").val() != null && $("#txtSearch").val() != undefined && $("#txtSearch").val() != "") {
+                $.ajax({
+                    type: 'GET',
+                    url: "/Home/Location/",
+                    contentType: 'application/json; charset=utf-8',
+                    data: { location: _location },
+                    dataType: 'json',
+                    success: function (result) {
+                        console.log(result);
+
+                        GetForecastByWoeId(result[0].woeID, _location);
+                    },
+                    failure: function (er) {
+
+                    }
+                });
+            }
+            else {
+            }
+        });
+    });
+    function GetForecastByWoeId(_woeID, _location) {
+        $.ajax({
+            type: 'GET',
+            url: "/Home/LocationForecast/",
+            contentType: 'application/json; charset=utf-8',
+            data: { woeID: _woeID },
+            dataType: 'json',
+            success: function (result) {
+                console.log(result);
+                if (result != null && result.length > 0) {
+                    $("#city").text(_location);
+                    $("#min_temp").text("Min Temp: " + result[0].minTemp + "°C");
+                    $("#max_temp").text("Max Temp: " + result[0].maxTemp + "°C");
+                    $("#humidity").text("Humidity: " + result[0].humidity + '%');
+                    $("#visibility").text("Visibility: " + parseFloat(result[0].visibility).toFixed(1) + " miles");
+                    $("#air_pressure").text("Air Prussure : " + result[0].airPressure + "mb");
+                    $("#predictability").text("Predictability : " + result[0].predictability + "%");
+                    $("#wind_speed").text(parseInt("Wind Speed : " + result[0].windSpeed) + "mph");
+
+                    $("#grdForecast").bootstrapTable("load", result);
+                    $("#grdForecast").bootstrapTable({ data: result });
+                }
+            },
+            failure: function (er) {
+
+            }
+
+        });
+    }
+
+
+
+</script>
+
